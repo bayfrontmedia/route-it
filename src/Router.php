@@ -424,6 +424,30 @@ class Router
     }
 
     /**
+     * Adds a specific path as a named route
+     *
+     * This is helpful when wanting to reference a URL that is not defined as a route.
+     *
+     * Named routes are added onto the $this->routes array using the key "named_routes"
+     * Because this key does not match any valid request method, these values will always
+     * be ignored when getting normal routes.
+     *
+     * @param string $path (Request path)
+     * @param string $name (Name to assign to this route)
+     *
+     * @return self
+     */
+
+    function addNamedRoute(string $path, string $name): self
+    {
+
+        $this->routes['named_routes'][$this->getHost()][$this->getRoutePrefix() . $this->_sanitizePath($path)]['name'] = $name;
+
+        return $this;
+
+    }
+
+    /**
      * Returns array of all route data for routes with a name
      *
      * @return array
@@ -482,7 +506,7 @@ class Router
     }
 
     /**
-     * Returns single named route
+     * Returns URL of a named route
      *
      * @param string $name
      * @param string $default (Default value to return if named route does not exist)

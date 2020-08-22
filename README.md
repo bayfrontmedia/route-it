@@ -128,6 +128,7 @@ For examples, see [addRoute](#addroute).
 - [post](#post)
 - [put](#put)
 - [getRoutes](#getroutes)
+- [addNamedRoute](#addnamedroute)
 - [getNamedRoutes](#getnamedroutes)
 - [getNamedRoute](#getnamedroute)
 - [dispatch](#dispatch)
@@ -625,6 +626,36 @@ Returns array of defined routes.
 
 <hr />
 
+### addNamedRoute
+
+**Description:**
+
+Adds a specific path as a named route.
+
+This is helpful when wanting to reference a URL that is not defined as a route.
+
+**Parameters:**
+
+- `$path` (string): Request path
+- `$name` (string): Name to assign to this route
+
+**Returns:**
+
+- (self)
+
+**Example:**
+
+```
+$router->setHost('example.com')->setPrefix('app');
+
+$router->addNamedRoute('/assets/css', 'css');
+
+// Returns: https://example.com/app/assets/css
+echo $router->getNamedRoute('login'); 
+```
+
+<hr />
+
 ### getNamedRoutes
 
 **Description:**
@@ -645,7 +676,7 @@ Returns array of named routes.
 
 **Description:**
 
-Returns single named route.
+Returns URL of a named route.
 
 **Parameters:**
 
@@ -655,18 +686,6 @@ Returns single named route.
 **Returns:**
 
 - (string)
-
-**Example:**
-
-```
-$router->setHost('example.com')->setPrefix('app');
-
-$router->addNamedRoute('/', 'home');
-$router->addNamedRoute('/login', 'login');
-
-// Returns: https://example.com/app/login
-echo $router->getNamedRoute('login'); 
-```
 
 <hr />
 
