@@ -1,0 +1,43 @@
+{
+  "name": "bayfrontmedia/route-it",
+  "description": "A fast, flexible router which can be used to quickly build RESTful web apps.",
+  "homepage": "https://github.com/bayfrontmedia/route-it",
+  "license" : "MIT",
+  "version": "1.0.0",
+  "type": "library",
+  "keywords": [
+    "php",
+    "router",
+    "http",
+    "dispatch",
+    "rest",
+    "api"
+  ],
+  "authors": [
+    {
+      "name": "John Robinson",
+      "email": "john@bayfrontmedia.com",
+      "homepage": "https://www.bayfrontmedia.com",
+      "role": "Developer"
+    }
+  ],
+  "funding": [
+    {
+      "type": "patreon",
+      "url": "https://www.patreon.com/bayfrontmedia"
+    }
+  ],
+  "require": {
+    "php": ">=7.1.0",
+    "ext-ctype": "*",
+    "bayfrontmedia/php-array-helpers": "^1.0.0",
+    "bayfrontmedia/php-http-request": "^1.0.0",
+    "bayfrontmedia/php-http-response": "^1.0.0",
+    "bayfrontmedia/php-string-helpers": "^1.0.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Bayfront\\RouteIt\\": "src/"
+    }
+  }
+}

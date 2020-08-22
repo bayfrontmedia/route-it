@@ -1,0 +1,271 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "a1eab0a76089597dd74843f70d59ebcb",
+    "packages": [
+        {
+            "name": "bayfrontmedia/php-array-helpers",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/bayfrontmedia/php-array-helpers.git",
+                "reference": "a5d3dd357f6bee31c857e16b1db0199efb10307e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/bayfrontmedia/php-array-helpers/zipball/a5d3dd357f6bee31c857e16b1db0199efb10307e",
+                "reference": "a5d3dd357f6bee31c857e16b1db0199efb10307e",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Bayfront\\ArrayHelpers\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "John Robinson",
+                    "email": "john@bayfrontmedia.com",
+                    "homepage": "https://www.bayfrontmedia.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Helper class to provide useful array functions.",
+            "homepage": "https://github.com/bayfrontmedia/php-array-helpers",
+            "keywords": [
+                "array",
+                "function",
+                "helper",
+                "helpers",
+                "php"
+            ],
+            "time": "2020-08-02T22:59:39+00:00"
+        },
+        {
+            "name": "bayfrontmedia/php-http-request",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/bayfrontmedia/php-http-request.git",
+                "reference": "f2837410cf6850cc424d97d40721357528e3c065"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/bayfrontmedia/php-http-request/zipball/f2837410cf6850cc424d97d40721357528e3c065",
+                "reference": "f2837410cf6850cc424d97d40721357528e3c065",
+                "shasum": ""
+            },
+            "require": {
+                "bayfrontmedia/php-array-helpers": "^1.0",
+                "bayfrontmedia/php-validator": "^1.0",
+                "php": ">=7.1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Bayfront\\HttpRequest\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "John Robinson",
+                    "email": "john@bayfrontmedia.com",
+                    "homepage": "https://www.bayfrontmedia.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Easily handle data from incoming HTTP requests.",
+            "homepage": "https://github.com/bayfrontmedia/php-http-request",
+            "keywords": [
+                "cookie",
+                "delete",
+                "get",
+                "head",
+                "header",
+                "http",
+                "method",
+                "patch",
+                "php",
+                "post",
+                "put",
+                "request",
+                "server",
+                "superglobal",
+                "url"
+            ],
+            "time": "2020-07-27T21:08:05+00:00"
+        },
+        {
+            "name": "bayfrontmedia/php-http-response",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/bayfrontmedia/php-http-response.git",
+                "reference": "c7a2da3b02ce85d10816fbe49feab61e782311c0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/bayfrontmedia/php-http-response/zipball/c7a2da3b02ce85d10816fbe49feab61e782311c0",
+                "reference": "c7a2da3b02ce85d10816fbe49feab61e782311c0",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Bayfront\\HttpResponse\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "John Robinson",
+                    "email": "john@bayfrontmedia.com",
+                    "homepage": "https://www.bayfrontmedia.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Easily send HTTP responses.",
+            "homepage": "https://github.com/bayfrontmedia/php-http-response",
+            "keywords": [
+                "header",
+                "http",
+                "method",
+                "php",
+                "redirect",
+                "response",
+                "url"
+            ],
+            "time": "2020-08-10T19:11:55+00:00"
+        },
+        {
+            "name": "bayfrontmedia/php-string-helpers",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/bayfrontmedia/php-string-helpers.git",
+                "reference": "e831a032d07559223b6014354cbdbdcb4a3c41fb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/bayfrontmedia/php-string-helpers/zipball/e831a032d07559223b6014354cbdbdcb4a3c41fb",
+                "reference": "e831a032d07559223b6014354cbdbdcb4a3c41fb",
+                "shasum": ""
+            },
+            "require": {
+                "ext-iconv": "*",
+                "ext-mbstring": "*",
+                "php": ">=7.1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Bayfront\\StringHelpers\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "John Robinson",
+                    "email": "john@bayfrontmedia.com",
+                    "homepage": "https://www.bayfrontmedia.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Helper class to provide useful string functions.",
+            "homepage": "https://github.com/bayfrontmedia/php-string-helpers",
+            "keywords": [
+                "function",
+                "helper",
+                "helpers",
+                "php",
+                "string"
+            ],
+            "time": "2020-07-27T19:32:18+00:00"
+        },
+        {
+            "name": "bayfrontmedia/php-validator",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/bayfrontmedia/php-validator.git",
+                "reference": "985ffc6d75c56701a141c53aedd45e5cdfc6c76f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/bayfrontmedia/php-validator/zipball/985ffc6d75c56701a141c53aedd45e5cdfc6c76f",
+                "reference": "985ffc6d75c56701a141c53aedd45e5cdfc6c76f",
+                "shasum": ""
+            },
+            "require": {
+                "ext-ctype": "*",
+                "ext-json": "*",
+                "php": ">=7.1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Bayfront\\Validator\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "John Robinson",
+                    "email": "john@bayfrontmedia.com",
+                    "homepage": "https://www.bayfrontmedia.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Simple class used to validate a variety of data.",
+            "homepage": "https://github.com/bayfrontmedia/php-validator",
+            "keywords": [
+                "numbers",
+                "php",
+                "strings",
+                "types",
+                "validate",
+                "validator",
+                "values"
+            ],
+            "time": "2020-07-27T20:22:36+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": {
+        "php": ">=7.1.0",
+        "ext-ctype": "*"
+    },
+    "platform-dev": []
+}
