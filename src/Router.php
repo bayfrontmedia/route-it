@@ -14,7 +14,6 @@ use Bayfront\HttpRequest\Request;
 use Bayfront\HttpResponse\InvalidStatusCodeException;
 use Bayfront\HttpResponse\Response;
 use Bayfront\StringHelpers\Str;
-use Exception;
 
 class Router
 {
@@ -621,23 +620,15 @@ class Router
                     $params['routes'] = $this->getNamedRoutes();
                 }
 
-                try {
+                $class = new $class_name();
 
-                    $class = new $class_name();
+                if (isset($automap['id'])) { // ID parameter
 
-                    if (isset($automap['id'])) { // ID parameter
-
-                        $params['id'] = $automap['id'];
-
-                    }
-
-                    return $class->$method($params);
-
-                } catch (Exception $e) {
-
-                    throw new DispatchException('Unable to dispatch: automapping error', 0, $e);
+                    $params['id'] = $automap['id'];
 
                 }
+
+                return $class->$method($params);
 
             }
 
@@ -676,15 +667,7 @@ class Router
 
         if (is_callable($destination)) {
 
-            try {
-
-                return call_user_func($destination, $params);
-
-            } catch (Exception $e) {
-
-                throw new DispatchException('Unable to dispatch: callable error', 0, $e);
-
-            }
+            return call_user_func($destination, $params);
 
         }
 
@@ -736,17 +719,9 @@ class Router
 
             if (class_exists($class_name) && method_exists($class_name, $method)) {
 
-                try {
+                $class = new $class_name();
 
-                    $class = new $class_name();
-
-                    return $class->$method($params);
-
-                } catch (Exception $e) {
-
-                    throw new DispatchException('Unable to dispatch: error instantiating class', 0, $e);
-
-                }
+                return $class->$method($params);
 
             }
 

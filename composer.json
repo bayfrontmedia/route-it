@@ -3,7 +3,7 @@
   "description": "A fast, flexible router which can be used to quickly build RESTful web apps.",
   "homepage": "https://github.com/bayfrontmedia/route-it",
   "license" : "MIT",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "library",
   "keywords": [
     "php",
