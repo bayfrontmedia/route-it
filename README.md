@@ -31,7 +31,7 @@ composer require bayfrontmedia/route-it
 
 ### Start using Route It
 
-Default configuration:
+Default options:
 
 ```
 use Bayfront\RouteIt\Router;
