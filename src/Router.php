@@ -312,6 +312,22 @@ class Router
     }
 
     /**
+     * Adds route for the CONNECT request method
+     *
+     * @param string $path
+     * @param mixed $destination
+     * @param array $params
+     * @param string|null $name
+     *
+     * @return self
+     */
+
+    public function connect(string $path, $destination, array $params = [], string $name = NULL): self
+    {
+        return $this->addRoute(Request::METHOD_CONNECT, $path, $destination, $params, $name);
+    }
+
+    /**
      * Adds route for the DELETE request method
      *
      * @param string $path
@@ -324,7 +340,7 @@ class Router
 
     public function delete(string $path, $destination, array $params = [], string $name = NULL): self
     {
-        return $this->addRoute('DELETE', $path, $destination, $params, $name);
+        return $this->addRoute(Request::METHOD_DELETE, $path, $destination, $params, $name);
     }
 
     /**
@@ -340,7 +356,7 @@ class Router
 
     public function get(string $path, $destination, array $params = [], string $name = NULL): self
     {
-        return $this->addRoute('GET', $path, $destination, $params, $name);
+        return $this->addRoute(Request::METHOD_GET, $path, $destination, $params, $name);
     }
 
     /**
@@ -356,7 +372,23 @@ class Router
 
     public function head(string $path, $destination, array $params = [], string $name = NULL): self
     {
-        return $this->addRoute('HEAD', $path, $destination, $params, $name);
+        return $this->addRoute(Request::METHOD_HEAD, $path, $destination, $params, $name);
+    }
+
+    /**
+     * Adds route for the OPTIONS request method
+     *
+     * @param string $path
+     * @param mixed $destination
+     * @param array $params
+     * @param string|null $name
+     *
+     * @return self
+     */
+
+    public function options(string $path, $destination, array $params = [], string $name = NULL): self
+    {
+        return $this->addRoute(Request::METHOD_OPTIONS, $path, $destination, $params, $name);
     }
 
     /**
@@ -372,7 +404,7 @@ class Router
 
     public function patch(string $path, $destination, array $params = [], string $name = NULL): self
     {
-        return $this->addRoute('PATCH', $path, $destination, $params, $name);
+        return $this->addRoute(Request::METHOD_PATCH, $path, $destination, $params, $name);
     }
 
     /**
@@ -388,7 +420,7 @@ class Router
 
     public function post(string $path, $destination, array $params = [], string $name = NULL): self
     {
-        return $this->addRoute('POST', $path, $destination, $params, $name);
+        return $this->addRoute(Request::METHOD_POST, $path, $destination, $params, $name);
     }
 
     /**
@@ -404,7 +436,23 @@ class Router
 
     public function put(string $path, $destination, array $params = [], string $name = NULL): self
     {
-        return $this->addRoute('PUT', $path, $destination, $params, $name);
+        return $this->addRoute(Request::METHOD_PUT, $path, $destination, $params, $name);
+    }
+
+    /**
+     * Adds route for the TRACE request method
+     *
+     * @param string $path
+     * @param mixed $destination
+     * @param array $params
+     * @param string|null $name
+     *
+     * @return self
+     */
+
+    public function trace(string $path, $destination, array $params = [], string $name = NULL): self
+    {
+        return $this->addRoute(Request::METHOD_TRACE, $path, $destination, $params, $name);
     }
 
     /**

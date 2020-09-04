@@ -121,12 +121,15 @@ For examples, see [addRoute](#addroute).
 - [getRedirects](#getredirects)
 - [addRoute](#addroute)
 - [any](#any)
+- [connect](#connect)
 - [delete](#delete)
 - [get](#get)
 - [head](#head)
+- [options](#options)
 - [patch](#patch)
 - [post](#post)
 - [put](#put)
+- [trace](#trace)
 - [getRoutes](#getroutes)
 - [addNamedRoute](#addnamedroute)
 - [getNamedRoutes](#getnamedroutes)
@@ -436,6 +439,35 @@ $router->any('/customers', 'Controller:anyMethod');
 
 <hr />
 
+### connect
+
+**Description:**
+
+Adds route for CONNECT request method.
+
+Equivalent of calling `addRoute('CONNECT'...)`
+
+**Parameters:**
+
+- `$path` (string): Request path
+- `$destination` (mixed)
+- `$params = []` (array): Parameters to pass to the destination
+- `$name = NULL` (string|null): An optional name to assign to this route
+
+**NOTE:** Names should not be assigned to routes which include wildcards in the path. Named routes are only intended to define specific URL's.
+
+**Returns:**
+
+- (self)
+
+**Example:**
+
+```
+$router->connect('/customers', 'Controller:connectMethod');
+```
+
+<hr />
+
 ### delete
 
 **Description:**
@@ -523,6 +555,35 @@ $router->head('/customers', 'Controller:headMethod');
 
 <hr />
 
+### options
+
+**Description:**
+
+Adds route for OPTIONS request method.
+
+Equivalent of calling `addRoute('OPTIONS'...)`
+
+**Parameters:**
+
+- `$path` (string): Request path
+- `$destination` (mixed)
+- `$params = []` (array): Parameters to pass to the destination
+- `$name = NULL` (string|null): An optional name to assign to this route
+
+**NOTE:** Names should not be assigned to routes which include wildcards in the path. Named routes are only intended to define specific URL's.
+
+**Returns:**
+
+- (self)
+
+**Example:**
+
+```
+$router->options('/customers', 'Controller:optionsMethod');
+```
+
+<hr />
+
 ### patch
 
 **Description:**
@@ -606,6 +667,35 @@ Equivalent of calling `addRoute('PUT'...)`
 
 ```
 $router->put('/customers', 'Controller:putMethod');
+```
+
+<hr />
+
+### trace
+
+**Description:**
+
+Adds route for TRACE request method.
+
+Equivalent of calling `addRoute('TRACE'...)`
+
+**Parameters:**
+
+- `$path` (string): Request path
+- `$destination` (mixed)
+- `$params = []` (array): Parameters to pass to the destination
+- `$name = NULL` (string|null): An optional name to assign to this route
+
+**NOTE:** Names should not be assigned to routes which include wildcards in the path. Named routes are only intended to define specific URL's.
+
+**Returns:**
+
+- (self)
+
+**Example:**
+
+```
+$router->trace('/customers', 'Controller:traceMethod');
 ```
 
 <hr />
