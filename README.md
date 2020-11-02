@@ -787,7 +787,7 @@ Dispatches the incoming HTTP request by searching for a matching redirect, route
 
 **Parameters:**
 
-- `$include_named_routes = true` (bool): Include named routes as a parameter to the destination?
+- `$include_named_routes = true` (bool): Include array of named routes as a parameter to the destination?
 
 **Returns:**
 
@@ -867,7 +867,7 @@ Dispatches to fallback for current request method, or throws exception.
 
 **Parameters:**
 
-- `$include_named_routes = true` (bool): Include named routes as a parameter to the destination?
+- `$include_named_routes = true` (bool): Include array of named routes as a parameter to the destination?
 
 **Returns:**
 
