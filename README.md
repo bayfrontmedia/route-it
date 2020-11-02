@@ -837,7 +837,7 @@ Destinations can be a callable function, a named route, a file, or a `$class->me
 
 - `$destination` (mixed)
 - `$params = []` (array): Parameters to pass to the destination
-- `$include_named_routes = true` (bool): Include named routes as a parameter to the destination?
+- `$include_named_routes = true` (bool): Include array of named routes as a parameter to the destination?
 
 **Returns:**
 
