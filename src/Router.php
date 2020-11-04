@@ -287,7 +287,15 @@ class Router
                 $route['name'] = $name;
             }
 
-            $this->routes[Request::validateMethod($method)][$this->getHost()][$this->getRoutePrefix() . $this->_sanitizePath($path)] = $route;
+            if (strtoupper($method) == self::METHOD_ANY) {
+
+                $this->routes[self::METHOD_ANY][$this->getHost()][$this->getRoutePrefix() . $this->_sanitizePath($path)] = $route;
+
+            } else {
+
+                $this->routes[Request::validateMethod($method)][$this->getHost()][$this->getRoutePrefix() . $this->_sanitizePath($path)] = $route;
+
+            }
 
         }
 
