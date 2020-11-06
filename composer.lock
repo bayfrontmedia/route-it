@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d1dba074c853bdecdb22239cc5020c3e",
+    "content-hash": "0bc338b0c8cda8e5a474bac3f732a020",
     "packages": [
         {
             "name": "bayfrontmedia/php-array-helpers",
@@ -64,20 +64,20 @@
         },
         {
             "name": "bayfrontmedia/php-http-request",
-            "version": "v1.3.0",
+            "version": "v2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bayfrontmedia/php-http-request.git",
-                "reference": "34560af1b9ad222038d0004c311e5b72110cf00e"
+                "reference": "08823acbb7632e7f022586d39e665996174e1aa9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bayfrontmedia/php-http-request/zipball/34560af1b9ad222038d0004c311e5b72110cf00e",
-                "reference": "34560af1b9ad222038d0004c311e5b72110cf00e",
+                "url": "https://api.github.com/repos/bayfrontmedia/php-http-request/zipball/08823acbb7632e7f022586d39e665996174e1aa9",
+                "reference": "08823acbb7632e7f022586d39e665996174e1aa9",
                 "shasum": ""
             },
             "require": {
-                "bayfrontmedia/php-array-helpers": "^1.0.0",
+                "bayfrontmedia/php-array-helpers": "^1.0.1",
                 "bayfrontmedia/php-validator": "^1.0.0",
                 "php": ">=7.1.0"
             },
@@ -121,7 +121,7 @@
             ],
             "support": {
                 "issues": "https://github.com/bayfrontmedia/php-http-request/issues",
-                "source": "https://github.com/bayfrontmedia/php-http-request/tree/v1.3.0"
+                "source": "https://github.com/bayfrontmedia/php-http-request/tree/v2.0.0"
             },
             "funding": [
                 {
@@ -129,7 +129,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2020-09-15T02:41:18+00:00"
+            "time": "2020-11-06T16:24:50+00:00"
         },
         {
             "name": "bayfrontmedia/php-http-response",
