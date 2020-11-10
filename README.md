@@ -785,9 +785,11 @@ Returns URL of a named route.
 
 Dispatches the incoming HTTP request by searching for a matching redirect, route, automapped location, or fallback.
 
+Destination-specific parameters will overwrite global parameters of the same key.
+
 **Parameters:**
 
-- `$include_named_routes = true` (bool): Include array of named routes as a parameter to the destination?
+- `$params = []` (array): Global parameters to pass to all destinations 
 
 **Returns:**
 
@@ -837,7 +839,6 @@ Destinations can be a callable function, a named route, a file, or a `$class->me
 
 - `$destination` (mixed)
 - `$params = []` (array): Parameters to pass to the destination
-- `$include_named_routes = true` (bool): Include array of named routes as a parameter to the destination?
 
 **Returns:**
 
@@ -865,9 +866,11 @@ try {
 
 Dispatches to fallback for current request method, or throws exception.
 
+Fallback-specific parameters defined using the `addFallback` method will overwrite these parameters of the same key.
+
 **Parameters:**
 
-- `$include_named_routes = true` (bool): Include array of named routes as a parameter to the destination?
+- `$params = []` (array): Parameters to pass to the destination
 
 **Returns:**
 
