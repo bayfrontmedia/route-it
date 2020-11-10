@@ -12,6 +12,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities
 
+## [2.0.0] - 2020.11.10
+
+### Changed
+
+- Changed `dispatch`, `dispatchTo` and `dispatchToFallback` methods to no longer include named routes as a parameter.
+They can now accept an array of user-defined parameters instead. 
+
 ## [1.1.2] - 2020.11.06
 
 ### Changed

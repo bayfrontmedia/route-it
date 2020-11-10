@@ -112,6 +112,7 @@ class Router
     public function setHost(string $host): self
     {
         $this->host = strtolower(trim($host, '/'));
+
         return $this;
     }
 
@@ -576,15 +577,18 @@ class Router
 
     /**
      * Dispatches the incoming HTTP request by searching for a matching redirect, route, automapped location, or
-     * fallback
+     * fallback.
      *
-     * @param bool $include_named_routes (Include named routes as a parameter to the destination?)
+     * Destination-specific parameters will overwrite global parameters of the same key.
+     *
+     * @param array $params (Global parameters to pass to all destinations)
+     *
      * @return mixed
      *
      * @throws DispatchException
      */
 
-    public function dispatch(bool $include_named_routes = true)
+    public function dispatch(array $params = [])
     {
 
         $this_request = Request::getRequest();
@@ -645,7 +649,9 @@ class Router
              * params
              */
 
-            return $this->dispatchTo($route['destination'], $route['params'], $include_named_routes);
+            $route['params'] = array_merge($params, $route['params']);
+
+            return $this->dispatchTo($route['destination'], $route['params']);
 
         }
 
@@ -668,14 +674,6 @@ class Router
 
                 $method = $automap['method'];
 
-                $params = [];
-
-                // Include all named routes
-
-                if (true === $include_named_routes) {
-                    $params['routes'] = $this->getNamedRoutes();
-                }
-
                 $class = new $class_name();
 
                 if (isset($automap['id'])) { // ID parameter
@@ -692,7 +690,7 @@ class Router
 
         // -------------------- Dispatch to fallback or throw exception --------------------
 
-        return $this->dispatchToFallback($include_named_routes);
+        return $this->dispatchToFallback($params);
 
     }
 
@@ -703,21 +701,14 @@ class Router
      *
      * @param mixed $destination
      * @param array $params (Parameters to pass to the destination)
-     * @param bool $include_named_routes (Include named routes as a parameter to the destination?)
      *
      * @return mixed
      *
      * @throws DispatchException
      */
 
-    public function dispatchTo($destination, array $params = [], bool $include_named_routes = true)
+    public function dispatchTo($destination, array $params = [])
     {
-
-        // Include all named routes
-
-        if (true === $include_named_routes && !isset($params['routes'])) {
-            $params['routes'] = $this->getNamedRoutes();
-        }
 
         // If callable
 
@@ -733,7 +724,7 @@ class Router
 
         if (isset($named_routes[$destination])) {
 
-            return $this->dispatchTo($named_routes[$destination]['destination'], $named_routes[$destination]['params'], $include_named_routes);
+            return $this->dispatchTo($named_routes[$destination]['destination'], $named_routes[$destination]['params']);
 
         }
 
@@ -793,9 +784,12 @@ class Router
     }
 
     /**
-     * Dispatches to fallback for current request method, or throws exception
+     * Dispatches to fallback for current request method, or throws exception.
      *
-     * @param bool $include_named_routes (Include named routes as a parameter to the destination?)
+     * Fallback-specific parameters defined using the "addFallback" method will overwrite these parameters of the same
+     * key.
+     *
+     * @param array $params (Parameters to pass to the destination)
      *
      * @return mixed
      *
@@ -803,7 +797,7 @@ class Router
      *
      */
 
-    public function dispatchToFallback(bool $include_named_routes = true)
+    public function dispatchToFallback(array $params = [])
     {
 
         $fallbacks = Arr::only($this->getFallbacks(), [ // Keep only keys for valid request methods
@@ -821,7 +815,9 @@ class Router
 
         $fallback = reset($fallbacks);
 
-        return $this->dispatchTo($fallback['destination'], $fallback['params'], $include_named_routes); // Dispatch the first matching fallback
+        $fallback['params'] = array_merge($params, $fallback['params']);
+
+        return $this->dispatchTo($fallback['destination'], $fallback['params']); // Dispatch the first matching fallback
 
     }
 
