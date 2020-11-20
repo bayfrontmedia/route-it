@@ -102,6 +102,25 @@ class Router
     }
 
     /**
+     * Returns a valid request method, including "ANY".
+     *
+     * @param string $method
+     *
+     * @return string
+     */
+
+    private function _validateMethod(string $method): string
+    {
+
+        if (strtoupper($method) == self::METHOD_ANY) {
+            return self::METHOD_ANY;
+        }
+
+        return Request::validateMethod($method);
+
+    }
+
+    /**
      * Sets the hostname for defined routes
      *
      * @param string $host
@@ -180,7 +199,7 @@ class Router
 
         foreach ((array)$methods as $method) {
 
-            $this->fallbacks[Request::validateMethod($method)] = [
+            $this->fallbacks[$this->_validateMethod($method)] = [
                 'destination' => $destination,
                 'params' => $params
             ];
@@ -228,7 +247,7 @@ class Router
 
             }
 
-            $this->redirects[Request::validateMethod($method)][$this->getHost()][$this->getRoutePrefix() . $this->_sanitizePath($path)] = [
+            $this->redirects[$this->_validateMethod($method)][$this->getHost()][$this->getRoutePrefix() . $this->_sanitizePath($path)] = [
                 'destination' => $destination,
                 'status' => $status
             ];
@@ -288,15 +307,7 @@ class Router
                 $route['name'] = $name;
             }
 
-            if (strtoupper($method) == self::METHOD_ANY) {
-
-                $this->routes[self::METHOD_ANY][$this->getHost()][$this->getRoutePrefix() . $this->_sanitizePath($path)] = $route;
-
-            } else {
-
-                $this->routes[Request::validateMethod($method)][$this->getHost()][$this->getRoutePrefix() . $this->_sanitizePath($path)] = $route;
-
-            }
+            $this->routes[$this->_validateMethod($method)][$this->getHost()][$this->getRoutePrefix() . $this->_sanitizePath($path)] = $route;
 
         }
 

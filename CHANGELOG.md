@@ -12,6 +12,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities
 
+## [2.0.1] - 2020.11.20
+
+### Fixed
+
+- Fixed bug where fallback was not being routed correctly with `ANY` request method.
+
 ## [2.0.0] - 2020.11.10
 
 ### Changed
