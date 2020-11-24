@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d4bd2bb76a6a82f799545b2db9565650",
+    "content-hash": "51476d9e4dbe6e9881467e9231b08877",
     "packages": [
         {
             "name": "bayfrontmedia/php-array-helpers",
-            "version": "1.0.1",
+            "version": "v1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bayfrontmedia/php-array-helpers.git",
-                "reference": "a5d3dd357f6bee31c857e16b1db0199efb10307e"
+                "reference": "ac938e3b5a252960539e331075d86a1e38bb4264"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bayfrontmedia/php-array-helpers/zipball/a5d3dd357f6bee31c857e16b1db0199efb10307e",
-                "reference": "a5d3dd357f6bee31c857e16b1db0199efb10307e",
+                "url": "https://api.github.com/repos/bayfrontmedia/php-array-helpers/zipball/ac938e3b5a252960539e331075d86a1e38bb4264",
+                "reference": "ac938e3b5a252960539e331075d86a1e38bb4264",
                 "shasum": ""
             },
             "require": {
@@ -52,7 +52,7 @@
             ],
             "support": {
                 "issues": "https://github.com/bayfrontmedia/php-array-helpers/issues",
-                "source": "https://github.com/bayfrontmedia/php-array-helpers/tree/master"
+                "source": "https://github.com/bayfrontmedia/php-array-helpers/tree/v1.1.0"
             },
             "funding": [
                 {
@@ -60,7 +60,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2020-08-02T22:59:39+00:00"
+            "time": "2020-11-23T16:52:47+00:00"
         },
         {
             "name": "bayfrontmedia/php-http-request",
@@ -133,16 +133,16 @@
         },
         {
             "name": "bayfrontmedia/php-http-response",
-            "version": "1.1.0",
+            "version": "v1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bayfrontmedia/php-http-response.git",
-                "reference": "ff29415da1314076025cbbe848e14133a1764c18"
+                "reference": "69c0875e4d4559b3e90ddff5a835db058853d216"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bayfrontmedia/php-http-response/zipball/ff29415da1314076025cbbe848e14133a1764c18",
-                "reference": "ff29415da1314076025cbbe848e14133a1764c18",
+                "url": "https://api.github.com/repos/bayfrontmedia/php-http-response/zipball/69c0875e4d4559b3e90ddff5a835db058853d216",
+                "reference": "69c0875e4d4559b3e90ddff5a835db058853d216",
                 "shasum": ""
             },
             "require": {
@@ -180,7 +180,7 @@
             ],
             "support": {
                 "issues": "https://github.com/bayfrontmedia/php-http-response/issues",
-                "source": "https://github.com/bayfrontmedia/php-http-response/tree/v1.1.0"
+                "source": "https://github.com/bayfrontmedia/php-http-response/tree/v1.1.1"
             },
             "funding": [
                 {
@@ -188,7 +188,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2020-10-20T18:33:58+00:00"
+            "time": "2020-11-24T02:51:12+00:00"
         },
         {
             "name": "bayfrontmedia/php-string-helpers",
