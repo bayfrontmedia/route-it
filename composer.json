@@ -31,7 +31,7 @@
     "ext-ctype": "*",
     "bayfrontmedia/php-array-helpers": "^1.1.0",
     "bayfrontmedia/php-http-request": "^2.0.0",
-    "bayfrontmedia/php-http-response": "^1.1.1",
+    "bayfrontmedia/php-http-response": "^1.2.0",
     "bayfrontmedia/php-string-helpers": "^1.0.0"
   },
   "autoload": {

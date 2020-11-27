@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f7f8446a819b57860489c40c25b0a586",
+    "content-hash": "f8735572865148f92f25a284c47122ea",
     "packages": [
         {
             "name": "bayfrontmedia/php-array-helpers",
@@ -133,16 +133,16 @@
         },
         {
             "name": "bayfrontmedia/php-http-response",
-            "version": "v1.1.1",
+            "version": "v1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bayfrontmedia/php-http-response.git",
-                "reference": "69c0875e4d4559b3e90ddff5a835db058853d216"
+                "reference": "173e05fb5104b8218328778cb2fefae684d029fd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bayfrontmedia/php-http-response/zipball/69c0875e4d4559b3e90ddff5a835db058853d216",
-                "reference": "69c0875e4d4559b3e90ddff5a835db058853d216",
+                "url": "https://api.github.com/repos/bayfrontmedia/php-http-response/zipball/173e05fb5104b8218328778cb2fefae684d029fd",
+                "reference": "173e05fb5104b8218328778cb2fefae684d029fd",
                 "shasum": ""
             },
             "require": {
@@ -180,7 +180,7 @@
             ],
             "support": {
                 "issues": "https://github.com/bayfrontmedia/php-http-response/issues",
-                "source": "https://github.com/bayfrontmedia/php-http-response/tree/v1.1.1"
+                "source": "https://github.com/bayfrontmedia/php-http-response/tree/v1.2.0"
             },
             "funding": [
                 {
@@ -188,7 +188,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2020-11-24T02:51:12+00:00"
+            "time": "2020-11-27T21:37:24+00:00"
         },
         {
             "name": "bayfrontmedia/php-string-helpers",
