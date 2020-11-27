@@ -51,6 +51,7 @@ $router = new Router($options);
 ### Force lowercase
 
 When `force_lowercase_url` is enabled in the `$options` array, all incoming requests which contain uppercase characters will be redirected via a 301 redirect to their lowercase counterpart.
+Query parameters will not be affected.
 
 ### Automapping
 
