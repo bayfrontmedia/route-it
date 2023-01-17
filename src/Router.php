@@ -584,70 +584,12 @@ class Router
      *
      * A DispatchException will be thrown if the request is unable to be resolved.
      *
+     * @param $params (Global parameters to pass to all destinations)
      * @return array
      * @throws DispatchException
      */
 
-    public function resolve(): array
-    {
-        $request = Request::getRequest();
-
-        // Redirects
-
-        $redirects = $this->_getMatchingRoute($this->getRedirects(), $request);
-
-        if (!empty($redirects)) {
-            return Arr::only($redirects, [
-                'destination',
-                'params',
-                'status'
-            ]);
-        }
-
-        // Routes
-
-        $routes =  $this->_getMatchingRoute($this->getRoutes(), $request);
-
-        if (!empty($routes)) {
-            return Arr::only($routes, [
-                'destination',
-                'params'
-            ]);
-        }
-
-        // Fallback
-
-        $fallbacks = Arr::only($this->getFallbacks(), [ // Keep only keys for valid request methods
-            self::METHOD_ANY,
-            Request::getRequest('method')
-        ]);
-
-        if (empty($fallbacks)) {
-            throw new DispatchException('Unable to dispatch: invalid destination');
-        }
-
-        return Arr::only(reset($fallbacks), [
-            'destination',
-            'params',
-            'status'
-        ]);
-
-    }
-
-    /**
-     * Dispatches the incoming HTTP request by searching for a matching redirect, route, automapped location, or
-     * fallback.
-     *
-     * Destination-specific parameters will overwrite global parameters of the same key.
-     *
-     * @param array $params (Global parameters to pass to all destinations)
-     *
-     * @return mixed
-     *
-     * @throws DispatchException
-     */
-
-    public function dispatch(array $params = [])
+    public function resolve(array $params = []): array
     {
 
         $this_request = Request::getRequest();
@@ -662,9 +604,11 @@ class Router
                 $redirect_url = $redirect_url . '?' . $this_request['query_string'];
             }
 
-            $this->redirect($redirect_url, 302);
-
-            return true; // To be safe
+            return [
+                'type' => 'redirect',
+                'destination' => $redirect_url,
+                'status' => 302
+            ];
 
         }
 
@@ -690,9 +634,11 @@ class Router
                 $query = '?' . $this_request['query_string'];
             }
 
-            $this->redirect($redirect['destination'] . $query, $redirect['status']);
-
-            return true; // To be safe
+            return [
+                'type' => 'redirect',
+                'destination' => $redirect['destination'] . $query,
+                'status' => $redirect['status']
+            ];
 
         }
 
@@ -708,9 +654,11 @@ class Router
              * params
              */
 
-            $route['params'] = array_merge($params, $route['params']);
-
-            return $this->dispatchTo($route['destination'], $route['params']);
+            return [
+                'type' => 'route',
+                'destination' => $route['destination'],
+                'params' => array_merge($params, $route['params'])
+            ];
 
         }
 
@@ -729,27 +677,83 @@ class Router
                  * id (optional)
                  */
 
-                $class_name = $automap['class'];
-
-                $method = $automap['method'];
-
-                $class = new $class_name();
-
-                if (isset($automap['id'])) { // ID parameter
-
+                if (isset($automap['id'])) {
                     $params['id'] = $automap['id'];
-
                 }
 
-                return $class->$method($params);
+                return [
+                    'type' => 'automap',
+                    'destination' => $automap['class'] . ':' . $automap['method'],
+                    'params' => $params
+                ];
 
             }
 
         }
 
-        // -------------------- Dispatch to fallback or throw exception --------------------
+        // -------------------- Fallback --------------------
 
-        return $this->dispatchToFallback($params);
+        $fallbacks = Arr::only($this->getFallbacks(), [ // Keep only keys for valid request methods
+            self::METHOD_ANY,
+            Request::getRequest('method')
+        ]);
+
+        if (empty($fallbacks)) {
+            throw new DispatchException('Unable to dispatch: invalid destination');
+        }
+
+        $return = Arr::only(reset($fallbacks), [
+            'destination',
+            'params',
+            'status'
+        ]);
+
+        $return['type'] = 'fallback';
+        $return['params'] = array_merge($return['params'], $params);
+
+        return $return;
+
+    }
+
+    /**
+     * Dispatches the incoming HTTP request by searching for a matching redirect, route, automapped location, or
+     * fallback.
+     *
+     * Destination-specific parameters will overwrite global parameters of the same key.
+     *
+     * @param array $params (Global parameters to pass to all destinations)
+     *
+     * @return mixed
+     *
+     * @throws DispatchException
+     */
+
+    public function dispatch(array $params = [])
+    {
+
+        $resolve = $this->resolve($params);
+
+        if (Arr::get($resolve, 'type') == 'redirect') {
+
+            $this->redirect(Arr::get($resolve, 'destination', ''), Arr::get($resolve, 'status', 302));
+            return true;
+        }
+
+        if (Arr::get($resolve, 'type') == 'route' || Arr::get($resolve, 'type') == 'automap') {
+
+            return $this->dispatchTo(Arr::get($resolve, 'destination', ''), Arr::get($resolve, 'params', []));
+
+        }
+
+        if (Arr::get($resolve, 'type') == 'fallback') {
+
+            http_response_code((int)Arr::get($resolve, 'status', 404));
+
+            return $this->dispatchTo(Arr::get($resolve, 'destination', ''), Arr::get($resolve, 'params', []));
+
+        }
+
+        return false;
 
     }
 
@@ -811,7 +815,7 @@ class Router
 
         if (isset($loc[1])) { // Dispatch to Class:method
 
-            if ($this->options['class_namespace'] == '') {
+            if ($this->options['class_namespace'] == '' || Str::startsWith($loc[0], $this->options['class_namespace'])) {
 
                 $class_name = $loc[0];
 
