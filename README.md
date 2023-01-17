@@ -78,12 +78,12 @@ For example:
 
 Using the above example, incoming requests would be automapped like so:
 
-| Endpoint | Class | Method | Parameter
-| --- | --- | --- | --- |
-| `/app` | App\Pages\Home | index | |
-| `/app/customers` | App\Pages\Customers | index | |
-| `/app/customers/edit` | App\Pages\Customers | edit | |
-| `/app/customers/edit/5` | App\Pages\Customers | edit | `['id' => 5]` |
+| Endpoint                | Class               | Method | Parameter     |
+|-------------------------|---------------------|--------|---------------|
+| `/app`                  | App\Pages\Home      | index  |               |
+| `/app/customers`        | App\Pages\Customers | index  |               |
+| `/app/customers/edit`   | App\Pages\Customers | edit   |               |
+| `/app/customers/edit/5` | App\Pages\Customers | edit   | `['id' => 5]` |
 
 Understandably, automapping does not provide a solution for every scenario, in which case, routes can be added.
 
@@ -138,6 +138,7 @@ For examples, see [addRoute](#addroute).
 - [addNamedRoute](#addnamedroute)
 - [getNamedRoutes](#getnamedroutes)
 - [getNamedRoute](#getnamedroute)
+- [resolve](#resolve)
 - [dispatch](#dispatch)
 - [dispatchTo](#dispatchto)
 - [dispatchToFallback](#dispatchtofallback)
@@ -771,6 +772,28 @@ Returns array of named routes.
 **Description:**
 
 Returns URL of a named route.
+
+**Parameters:**
+
+- `$name` (string)
+- `$default = ''` (string): Default value to return if named route does not exist
+
+**Returns:**
+
+- (string)
+
+<hr />
+
+### resolve
+
+**Description:**
+
+Resolve request in the same manner as `dispatch()` without dispatching.
+Returned array may contain the keys `destination`, `params` and `status`.
+
+For redirects, the key `params` will not exist, and `status` will contain the HTTP status code to return.
+
+A `DispatchException` will be thrown if the request is unable to be resolved.
 
 **Parameters:**
 

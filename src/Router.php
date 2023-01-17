@@ -1,12 +1,5 @@
 <?php
 
-/**
- * @package route-it
- * @link https://github.com/bayfrontmedia/route-it
- * @author John Robinson <john@bayfrontmedia.com>
- * @copyright 2020 Bayfront Media
- */
-
 namespace Bayfront\RouteIt;
 
 use Bayfront\ArrayHelpers\Arr;
@@ -18,9 +11,9 @@ use Bayfront\StringHelpers\Str;
 class Router
 {
 
-    private $response;
+    protected $response;
 
-    private $options;
+    protected $options;
 
     /**
      * Router constructor
@@ -42,18 +35,15 @@ class Router
             'force_lowercase_url' => false
         ];
 
-        $options = Arr::only($options, [
+        // Overwrite default option values when defined
+
+        $this->options = Arr::only(array_merge($default_options, $options), [
             'automapping_enabled',
             'automapping_namespace',
             'automapping_route_prefix',
             'class_namespace',
             'files_root_path',
-            'force_lowercase_url'
-        ]);
-
-        // Overwrite default option values when defined
-
-        $this->options = array_merge($default_options, $options);
+            'force_lowercase_url']);
 
         // Sanitize paths
 
@@ -587,6 +577,64 @@ class Router
     }
 
     /**
+     * Resolve request in the same manner as dispatch() without dispatching.
+     * Returned array may contain the keys "destination", "params" and "status".
+     *
+     * For redirects, the key "params" will not exist, and "status" will contain the HTTP status code to return.
+     *
+     * A DispatchException will be thrown if the request is unable to be resolved.
+     *
+     * @return array
+     * @throws DispatchException
+     */
+
+    public function resolve(): array
+    {
+        $request = Request::getRequest();
+
+        // Redirects
+
+        $redirects = $this->_getMatchingRoute($this->getRedirects(), $request);
+
+        if (!empty($redirects)) {
+            return Arr::only($redirects, [
+                'destination',
+                'params',
+                'status'
+            ]);
+        }
+
+        // Routes
+
+        $routes =  $this->_getMatchingRoute($this->getRoutes(), $request);
+
+        if (!empty($routes)) {
+            return Arr::only($routes, [
+                'destination',
+                'params'
+            ]);
+        }
+
+        // Fallback
+
+        $fallbacks = Arr::only($this->getFallbacks(), [ // Keep only keys for valid request methods
+            self::METHOD_ANY,
+            Request::getRequest('method')
+        ]);
+
+        if (empty($fallbacks)) {
+            throw new DispatchException('Unable to dispatch: invalid destination');
+        }
+
+        return Arr::only(reset($fallbacks), [
+            'destination',
+            'params',
+            'status'
+        ]);
+
+    }
+
+    /**
      * Dispatches the incoming HTTP request by searching for a matching redirect, route, automapped location, or
      * fallback.
      *
@@ -914,15 +962,7 @@ class Router
 
                 if (class_exists($class_name)) {
 
-                    if (isset($segments[1])) {
-
-                        $method = $segments[1];
-
-                    } else {
-
-                        $method = 'index';
-
-                    }
+                    $method = $segments[1] ?? 'index';
 
                     if (method_exists($class_name, $method)) {
 
