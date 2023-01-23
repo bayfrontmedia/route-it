@@ -612,7 +612,7 @@ class Router
             return [
                 'type' => 'redirect',
                 'destination' => $redirect_url,
-                'status' => 302
+                'status' => 301
             ];
 
         }
