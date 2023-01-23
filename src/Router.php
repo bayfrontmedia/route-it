@@ -55,15 +55,15 @@ class Router
 
     const METHOD_ANY = 'ANY';
 
-    private $host = '';
+    protected $host = '';
 
-    private $route_prefix = '';
+    protected $route_prefix = '';
 
-    private $routes = [];
+    protected $routes = [];
 
-    private $redirects = [];
+    protected $redirects = [];
 
-    private $fallbacks = [];
+    protected $fallbacks = [];
 
     /**
      * Ensures consistent path syntax
@@ -76,7 +76,7 @@ class Router
      * @return string
      */
 
-    private function _sanitizePath(string $path, bool $lowercase = true): string
+    protected function _sanitizePath(string $path, bool $lowercase = true): string
     {
 
         if ($path === '/' || $path === '') {
@@ -99,7 +99,7 @@ class Router
      * @return string
      */
 
-    private function _validateMethod(string $method): string
+    protected function _validateMethod(string $method): string
     {
 
         if (strtoupper($method) == self::METHOD_ANY) {
@@ -226,7 +226,7 @@ class Router
      * @return self
      */
 
-    public function addRedirect($methods, string $path, string $destination, int $status = 301): self
+    public function addRedirect($methods, string $path, string $destination, int $status = 302): self
     {
 
         foreach ((array)$methods as $method) {
@@ -271,7 +271,7 @@ class Router
      * "wildcard".
      *
      * NOTE: Names should not be assigned to routes which include wildcards in the path. Named routes are only
-     * intended to define specific URL's. Named route names must be unique, as names which already exist are
+     * intended to define specific URLs. Named route names must be unique, as names which already exist are
      * overwritten.
      *
      * @param string|array $methods (Request method(s) for which this route is valid, or "ANY")
@@ -510,7 +510,7 @@ class Router
      * @return array
      */
 
-    private function _getAllNamedRoutes(): array
+    protected function _getAllNamedRoutes(): array
     {
 
         $names = [];
@@ -577,10 +577,15 @@ class Router
     }
 
     /**
-     * Resolve request in the same manner as dispatch() without dispatching.
-     * Returned array may contain the keys "destination", "params" and "status".
+     * Resolves the incoming HTTP request by searching for a matching redirect, route, automapped location, or fallback.
+     * Destination-specific parameters will overwrite global parameters of the same key.
      *
-     * For redirects, the key "params" will not exist, and "status" will contain the HTTP status code to return.
+     * Returned array:
+     *
+     * - `redirect`: Contains keys `type`, `destination` (URL), and `status` (HTTP status code)
+     * - `route`: Contains keys `type`, `destination` (defined route), and `params`
+     * - `automap`: Contains keys `type`, `destination` (as class:method), and `params`
+     * - `fallback`: Contains keys `type`, `destination` (defined fallback), `params` and `status`
      *
      * A DispatchException will be thrown if the request is unable to be resolved.
      *
@@ -716,8 +721,7 @@ class Router
     }
 
     /**
-     * Dispatches the incoming HTTP request by searching for a matching redirect, route, automapped location, or
-     * fallback.
+     * Resolves and dispatches the incoming HTTP request.
      *
      * Destination-specific parameters will overwrite global parameters of the same key.
      *
@@ -924,7 +928,7 @@ class Router
      * @return array
      */
 
-    private function _getAutomapDestination(array $this_request): array
+    protected function _getAutomapDestination(array $this_request): array
     {
 
         if (Str::startsWith($this_request['path'], $this->options['automapping_route_prefix'])) {
@@ -932,7 +936,7 @@ class Router
             $segments = explode('/', trim(str_replace($this->options['automapping_route_prefix'], '', $this_request['path']), '/'));
 
             /*
-             * For the time being, automapping will only work for URL's with no more than
+             * For the time being, automapping will only work for URLs with no more than
              * three segments, ie: class/method/id
              */
 
@@ -1007,7 +1011,7 @@ class Router
      * ]
      *
      * Both $this->getRedirects() and $this->getRoutes() arrays are
-     * setup like this.
+     * set up like this.
      *
      * @param $routes array
      * @param $this_request array
@@ -1015,7 +1019,7 @@ class Router
      * @return array
      */
 
-    private function _getMatchingRoute(array $routes, array $this_request): array
+    protected function _getMatchingRoute(array $routes, array $this_request): array
     {
 
         $routes = Arr::only($routes, [ // Keep only keys for valid request methods
@@ -1037,7 +1041,7 @@ class Router
                 $request_host
             ]);
 
-            if (empty($hosts_arr)) { // No valid destinations exist for this request's host- continue to next iteration
+            if (empty($hosts_arr)) { // No valid destinations exist for this request's host - continue to next iteration
                 continue;
             }
 
@@ -1086,7 +1090,7 @@ class Router
      * @return array
      */
 
-    private function _getWildcardMatch(array $route_arr, string $request_path): array
+    protected function _getWildcardMatch(array $route_arr, string $request_path): array
     {
 
         /*
@@ -1109,16 +1113,15 @@ class Router
                 strpos(end($route_segments), '{?:') === false
             ) { // Match impossibility
 
-                continue; // This route does not match- continue to next iteration
+                continue; // This route does not match - continue to next iteration
 
             }
 
             // Keep searching... route may be valid
 
-            // Reset internal pointers back to start of array
+            // Reset internal pointer back to start of array
 
             reset($route_segments);
-            reset($request_segments);
 
             // Start iterating through route segments ensuring the request is valid
 
@@ -1146,13 +1149,11 @@ class Router
                          * as already checked for an exact match before this method is called.
                          */
 
-                        $valid_segments++;
-
-                        continue 1; // Valid segment, continue to the next segment
+                        $valid_segments++; // Valid segment, continue to the next segment
 
                     } else {
 
-                        continue 2; // This route does not match- continue to next route
+                        continue 2; // This route does not match - continue to next route
 
                     }
 
@@ -1166,15 +1167,13 @@ class Router
 
                     if (!isset($exp_wildcard[1])) { // Invalid wildcard syntax
 
-                        continue 2; // This route does not match- continue to next route
+                        continue 2; // This route does not match - continue to next route
 
                     }
 
                     $wc_type = ltrim($exp_wildcard[0], '{');
 
                     $wc_name = rtrim($exp_wildcard[1], '}');
-
-                    $segment = NULL; // Be sure $segment is defined
 
                     if (isset($request_segments[$k])) { // If request segment exists
 
@@ -1194,11 +1193,11 @@ class Router
 
                         $valid_segments++;
 
-                        continue 1; // Valid segment, continue to next segment
+                        continue; // Valid segment, continue to next segment
 
                     } else { // Request segment doesn't exist, and wildcard is not optional
 
-                        continue 2; // This route does not match- continue to next route
+                        continue 2; // This route does not match - continue to next route
 
                     }
 
@@ -1216,13 +1215,11 @@ class Router
 
                             $wildcard_params[$wc_name] = $segment;
 
-                            $valid_segments++;
-
-                            continue 1; // Valid segment, continue to next segment
+                            $valid_segments++; // Valid segment, continue to next segment
 
                         } else {
 
-                            continue 2; // This route does not match- continue to next route
+                            continue 2; // This route does not match - continue to next route
 
                         }
 
@@ -1232,13 +1229,11 @@ class Router
 
                             $wildcard_params[$wc_name] = $segment;
 
-                            $valid_segments++;
-
-                            continue 1; // Valid segment, continue to next segment
+                            $valid_segments++; // Valid segment, continue to next segment
 
                         } else {
 
-                            continue 2; // This route does not match- continue to next route
+                            continue 2; // This route does not match - continue to next route
 
                         }
 
@@ -1248,13 +1243,11 @@ class Router
 
                             $wildcard_params[$wc_name] = $segment;
 
-                            $valid_segments++;
-
-                            continue 1; // Valid segment, continue to next segment
+                            $valid_segments++; // Valid segment, continue to next segment
 
                         } else {
 
-                            continue 2; // This route does not match- continue to next route
+                            continue 2; // This route does not match - continue to next route
 
                         }
 
@@ -1264,13 +1257,11 @@ class Router
 
                             $wildcard_params[$wc_name] = $segment;
 
-                            $valid_segments++;
-
-                            continue 1; // Valid segment, continue to next segment
+                            $valid_segments++; // Valid segment, continue to next segment
 
                         } else {
 
-                            continue 2; // This route does not match- continue to next route
+                            continue 2; // This route does not match - continue to next route
 
                         }
 
@@ -1285,9 +1276,7 @@ class Router
 
                         $wildcard_params[$wc_name] = implode('/', array_slice($request_segments, $k));
 
-                        $valid_segments++;
-
-                        continue 1;
+                        $valid_segments++; // Valid segment, continue to next segment
 
                     } else if ($wc_type == '?') {
 
@@ -1295,19 +1284,17 @@ class Router
 
                             $wildcard_params[$wc_name] = $segment;
 
-                            $valid_segments++;
-
-                            continue 1; // Valid segment, continue to next segment
+                            $valid_segments++; // Valid segment, continue to next segment
 
                         } else {
 
-                            continue 2; // This route does not match- continue to next route
+                            continue 2; // This route does not match - continue to next route
 
                         }
 
                     } else { // Invalid type
 
-                        continue 2; // This route does not match- continue to next route
+                        continue 2; // This route does not match - continue to next route
 
                     }
 

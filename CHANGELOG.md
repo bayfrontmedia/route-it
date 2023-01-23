@@ -12,6 +12,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities
 
+## [2.1.1] - 2023.01.23
+
+### Changed
+
+- Updated default status code to `302` for `addRedirect` method
+- Updated documentation
+- Internal code cleanup
+
 ## [2.1.0] - 2023.01.17
 
 ### Added

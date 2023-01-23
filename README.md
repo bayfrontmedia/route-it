@@ -297,7 +297,7 @@ Adds a redirect. Wildcards can be used in the path.
 - `$methods` (string|array): Request method(s) for which this redirect is valid, or "ANY"
 - `$path` (string): Request path
 - `$destination` (string): Can be an internal path or fully qualified URL
-- `$status = 301` (int): HTTP status code used with the redirect
+- `$status = 302` (int): HTTP status code used with the redirect
 
 **Returns:**
 
@@ -788,10 +788,15 @@ Returns URL of a named route.
 
 **Description:**
 
-Resolve request in the same manner as `dispatch()` without dispatching.
-Returned array may contain the keys `destination`, `params` and `status`.
+Resolves the incoming HTTP request by searching for a matching redirect, route, automapped location, or fallback.
+Destination-specific parameters will overwrite global parameters of the same key.
 
-For redirects, the key `params` will not exist, and `status` will contain the HTTP status code to return.
+Returned array:
+
+- `redirect`: Contains keys `type`, `destination` (URL), and `status` (HTTP status code)
+- `route`: Contains keys `type`, `destination` (defined route), and `params`
+- `automap`: Contains keys `type`, `destination` (as class:method), and `params`
+- `fallback`: Contains keys `type`, `destination` (defined fallback), `params` and `status`
 
 A `DispatchException` will be thrown if the request is unable to be resolved.
 
@@ -802,7 +807,7 @@ A `DispatchException` will be thrown if the request is unable to be resolved.
 
 **Returns:**
 
-- (string)
+- (array)
 
 <hr />
 
@@ -810,7 +815,7 @@ A `DispatchException` will be thrown if the request is unable to be resolved.
 
 **Description:**
 
-Dispatches the incoming HTTP request by searching for a matching redirect, route, automapped location, or fallback.
+Resolves and dispatches the incoming HTTP request.
 
 Destination-specific parameters will overwrite global parameters of the same key.
 
@@ -943,7 +948,7 @@ Redirects to a given URL using a given status code.
 ```
 try {
 
-    $router->redirect('http://www.example.com);
+    $router->redirect('https://www.example.com);
 
 } catch (DispatchException $e) {
     die($e->getMessage());
