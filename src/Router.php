@@ -11,9 +11,9 @@ use Bayfront\StringHelpers\Str;
 class Router
 {
 
-    protected $response;
+    protected Response $response;
 
-    protected $options;
+    protected array $options;
 
     /**
      * Router constructor
@@ -55,15 +55,15 @@ class Router
 
     const METHOD_ANY = 'ANY';
 
-    protected $host = '';
+    protected string $host = '';
 
-    protected $route_prefix = '';
+    protected string $route_prefix = '';
 
-    protected $routes = [];
+    protected array $routes = [];
 
-    protected $redirects = [];
+    protected array $redirects = [];
 
-    protected $fallbacks = [];
+    protected array $fallbacks = [];
 
     /**
      * Ensures consistent path syntax
@@ -177,14 +177,14 @@ class Router
      *
      * The response will be sent with a 404 HTTP status code.
      *
-     * @param string|array $methods (Request method(s) for which this fallback is valid, or "ANY")
+     * @param array|string $methods (Request method(s) for which this fallback is valid, or "ANY")
      * @param mixed $destination
      * @param array $params (Parameters to pass to the destination)
      *
      * @return self
      */
 
-    public function addFallback($methods, $destination, array $params = []): self
+    public function addFallback(array|string $methods, mixed $destination, array $params = []): self
     {
 
         foreach ((array)$methods as $method) {
@@ -218,7 +218,7 @@ class Router
     /**
      * Adds a redirect. Wildcards can be used in the path.
      *
-     * @param string|array $methods (Request method(s) for which this redirect is valid, or "ANY")
+     * @param array|string $methods (Request method(s) for which this redirect is valid, or "ANY")
      * @param string $path (Request path)
      * @param string $destination (Can be an internal path or fully qualified URL)
      * @param int $status (HTTP status code used with the redirect)
@@ -226,7 +226,7 @@ class Router
      * @return self
      */
 
-    public function addRedirect($methods, string $path, string $destination, int $status = 302): self
+    public function addRedirect(array|string $methods, string $path, string $destination, int $status = 302): self
     {
 
         foreach ((array)$methods as $method) {
@@ -274,7 +274,7 @@ class Router
      * intended to define specific URLs. Named route names must be unique, as names which already exist are
      * overwritten.
      *
-     * @param string|array $methods (Request method(s) for which this route is valid, or "ANY")
+     * @param array|string $methods (Request method(s) for which this route is valid, or "ANY")
      * @param string $path (Request path)
      * @param mixed $destination
      * @param array $params (Parameters to pass to the destination)
@@ -283,7 +283,7 @@ class Router
      * @return self
      */
 
-    public function addRoute($methods, string $path, $destination, array $params = [], string $name = NULL): self
+    public function addRoute(array|string $methods, string $path, mixed $destination, array $params = [], string $name = NULL): self
     {
 
         foreach ((array)$methods as $method) {
@@ -316,7 +316,7 @@ class Router
      * @return self
      */
 
-    public function any(string $path, $destination, array $params = [], string $name = NULL): self
+    public function any(string $path, mixed $destination, array $params = [], string $name = NULL): self
     {
         return $this->addRoute(self::METHOD_ANY, $path, $destination, $params, $name);
     }
@@ -332,7 +332,7 @@ class Router
      * @return self
      */
 
-    public function connect(string $path, $destination, array $params = [], string $name = NULL): self
+    public function connect(string $path, mixed $destination, array $params = [], string $name = NULL): self
     {
         return $this->addRoute(Request::METHOD_CONNECT, $path, $destination, $params, $name);
     }
@@ -348,7 +348,7 @@ class Router
      * @return self
      */
 
-    public function delete(string $path, $destination, array $params = [], string $name = NULL): self
+    public function delete(string $path, mixed $destination, array $params = [], string $name = NULL): self
     {
         return $this->addRoute(Request::METHOD_DELETE, $path, $destination, $params, $name);
     }
@@ -364,7 +364,7 @@ class Router
      * @return self
      */
 
-    public function get(string $path, $destination, array $params = [], string $name = NULL): self
+    public function get(string $path, mixed $destination, array $params = [], string $name = NULL): self
     {
         return $this->addRoute(Request::METHOD_GET, $path, $destination, $params, $name);
     }
@@ -380,7 +380,7 @@ class Router
      * @return self
      */
 
-    public function head(string $path, $destination, array $params = [], string $name = NULL): self
+    public function head(string $path, mixed $destination, array $params = [], string $name = NULL): self
     {
         return $this->addRoute(Request::METHOD_HEAD, $path, $destination, $params, $name);
     }
@@ -396,7 +396,7 @@ class Router
      * @return self
      */
 
-    public function options(string $path, $destination, array $params = [], string $name = NULL): self
+    public function options(string $path, mixed $destination, array $params = [], string $name = NULL): self
     {
         return $this->addRoute(Request::METHOD_OPTIONS, $path, $destination, $params, $name);
     }
@@ -412,7 +412,7 @@ class Router
      * @return self
      */
 
-    public function patch(string $path, $destination, array $params = [], string $name = NULL): self
+    public function patch(string $path, mixed $destination, array $params = [], string $name = NULL): self
     {
         return $this->addRoute(Request::METHOD_PATCH, $path, $destination, $params, $name);
     }
@@ -428,7 +428,7 @@ class Router
      * @return self
      */
 
-    public function post(string $path, $destination, array $params = [], string $name = NULL): self
+    public function post(string $path, mixed $destination, array $params = [], string $name = NULL): self
     {
         return $this->addRoute(Request::METHOD_POST, $path, $destination, $params, $name);
     }
@@ -444,7 +444,7 @@ class Router
      * @return self
      */
 
-    public function put(string $path, $destination, array $params = [], string $name = NULL): self
+    public function put(string $path, mixed $destination, array $params = [], string $name = NULL): self
     {
         return $this->addRoute(Request::METHOD_PUT, $path, $destination, $params, $name);
     }
@@ -460,7 +460,7 @@ class Router
      * @return self
      */
 
-    public function trace(string $path, $destination, array $params = [], string $name = NULL): self
+    public function trace(string $path, mixed $destination, array $params = [], string $name = NULL): self
     {
         return $this->addRoute(Request::METHOD_TRACE, $path, $destination, $params, $name);
     }
@@ -732,7 +732,7 @@ class Router
      * @throws DispatchException
      */
 
-    public function dispatch(array $params = [])
+    public function dispatch(array $params = []): mixed
     {
 
         $resolve = $this->resolve($params);
@@ -774,7 +774,7 @@ class Router
      * @throws DispatchException
      */
 
-    public function dispatchTo($destination, array $params = [])
+    public function dispatchTo(mixed $destination, array $params = []): mixed
     {
 
         // If callable
@@ -864,7 +864,7 @@ class Router
      *
      */
 
-    public function dispatchToFallback(array $params = [])
+    public function dispatchToFallback(array $params = []): mixed
     {
 
         $fallbacks = Arr::only($this->getFallbacks(), [ // Keep only keys for valid request methods
@@ -1109,8 +1109,8 @@ class Router
              */
 
             if (count($route_segments) !== count($request_segments) &&
-                strpos(end($route_segments), '{**:') === false &&
-                strpos(end($route_segments), '{?:') === false
+                !Str::has(end($route_segments), '{**:') &&
+                !Str::has(end($route_segments), '{?:')
             ) { // Match impossibility
 
                 continue; // This route does not match - continue to next iteration
