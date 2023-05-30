@@ -12,6 +12,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities
 
+## [3.0.1] - 2023.05.30
+
+### Fixed
+
+- Fixed bug in `_getMatchingRoute` method when request array does not contain expected values
+
 ## [3.0.0] - 2023.01.27
 
 ### Added

@@ -1024,16 +1024,20 @@ class Router
 
         $routes = Arr::only($routes, [ // Keep only keys for valid request methods
             self::METHOD_ANY,
-            $this_request['method']
+            Arr::get($this_request, 'method', '')
         ]);
 
         if (empty($routes)) { // No valid destinations exist with this request method
             return [];
         }
 
-        $request_host = strtolower($this_request['host']);
+        $request_host = strtolower(Arr::get($this_request, 'host', ''));
 
-        $request_path = $this->_sanitizePath($this_request['path']);
+        $request_path = $this->_sanitizePath(Arr::get($this_request, 'path', ''));
+
+        if ($request_host == '' || $request_path == '') {
+            return [];
+        }
 
         foreach ($routes as $hosts_arr) { // For each array of routes for a given request method
 
