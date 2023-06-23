@@ -1031,7 +1031,13 @@ class Router
             return [];
         }
 
-        $request_host = strtolower(Arr::get($this_request, 'host', ''));
+        $request_host = Arr::get($this_request, 'host', '');
+
+        if (is_string($request_host)) {
+            $request_host = strtolower($request_host);
+        } else {
+            $request_host = '';
+        }
 
         $request_path = $this->_sanitizePath(Arr::get($this_request, 'path', ''));
 
