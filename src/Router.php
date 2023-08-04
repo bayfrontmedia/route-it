@@ -553,19 +553,26 @@ class Router
      *
      * Automatically replaces wildcards with resolved parameters.
      *
+     * @param array $params (Additional parameters used to replace wildcards)
      * @return array
      */
 
-    public function getNamedRoutes(): array
+    public function getNamedRoutes(array $params = []): array
     {
 
-        if (!empty(self::$named_routes)) {
-            return self::$named_routes;
+        /*
+         * Return named routes based on the parameters passed.
+         */
+
+        $params_hash = md5(json_encode($params));
+
+        if (isset(self::$named_routes[$params_hash])) {
+            return self::$named_routes[$params_hash];
         }
 
         $return = [];
 
-        $params = $this->getResolvedParameters();
+        $params = array_merge($this->getResolvedParameters(), $params);
 
         foreach ($this->_getAllNamedRoutes() as $name => $route) {
 
@@ -600,9 +607,9 @@ class Router
 
         }
 
-        self::$named_routes = $return;
+        self::$named_routes[$params_hash] = $return;
 
-        return self::$named_routes;
+        return self::$named_routes[$params_hash];
 
     }
 
@@ -613,25 +620,13 @@ class Router
      *
      * @param string $name
      * @param string $default (Default value to return if named route does not exist)
-     *
+     * @param array $params (Additional parameters used to replace wildcards)
      * @return string
      */
 
-    public function getNamedRoute(string $name, string $default = ''): string
+    public function getNamedRoute(string $name, string $default = '', array $params = []): string
     {
-        return Arr::get($this->getNamedRoutes(), $name, $default);
-    }
-
-    private array $resolved_params = [];
-
-    /**
-     * Get array of all parameters present for the current route, once resolved/dispatched.
-     *
-     * @return array
-     */
-    public function getResolvedParameters(): array
-    {
-        return $this->resolved_params;
+        return Arr::get($this->getNamedRoutes($params), $name, $default);
     }
 
     /**
@@ -1419,6 +1414,18 @@ class Router
 
         return []; // Return empty array if no matches
 
+    }
+
+    private array $resolved_params = [];
+
+    /**
+     * Get array of all parameters present for the current route, once resolved/dispatched.
+     *
+     * @return array
+     */
+    public function getResolvedParameters(): array
+    {
+        return $this->resolved_params;
     }
 
 }

@@ -138,11 +138,11 @@ For examples, see [addRoute](#addroute).
 - [addNamedRoute](#addnamedroute)
 - [getNamedRoutes](#getnamedroutes)
 - [getNamedRoute](#getnamedroute)
-- [getResolvedParameters](#getresolvedparameters)
 - [resolve](#resolve)
 - [dispatch](#dispatch)
 - [dispatchTo](#dispatchto)
 - [dispatchToFallback](#dispatchtofallback)
+- [getResolvedParameters](#getresolvedparameters)
 
 <hr />
 
@@ -762,7 +762,7 @@ Automatically replaces wildcards with resolved parameters.
 
 **Parameters:**
 
-- None
+- `$params = []` (array): Additional parameters used to replace wildcards
 
 **Returns:**
 
@@ -782,26 +782,11 @@ Automatically replaces wildcards with resolved parameters.
 
 - `$name` (string)
 - `$default = ''` (string): Default value to return if named route does not exist
+- `$params = []` (array): Additional parameters used to replace wildcards
 
 **Returns:**
 
 - (string)
-
-<hr />
-
-### getResolvedParameters
-
-**Description:**
-
-Get array of all parameters present for the current route, once resolved/dispatched.
-
-**Parameters:**
-
-- None
-
-**Returns:**
-
-- (array)
 
 <hr />
 
@@ -975,3 +960,19 @@ try {
     die($e->getMessage());
 }
 ```
+
+<hr />
+
+### getResolvedParameters
+
+**Description:**
+
+Get array of all parameters present for the current route, once resolved/dispatched.
+
+**Parameters:**
+
+- None
+
+**Returns:**
+
+- (array)
