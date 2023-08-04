@@ -138,6 +138,7 @@ For examples, see [addRoute](#addroute).
 - [addNamedRoute](#addnamedroute)
 - [getNamedRoutes](#getnamedroutes)
 - [getNamedRoute](#getnamedroute)
+- [getResolvedParameters](#getresolvedparameters)
 - [resolve](#resolve)
 - [dispatch](#dispatch)
 - [dispatchTo](#dispatchto)
@@ -781,6 +782,22 @@ Returns URL of a named route.
 **Returns:**
 
 - (string)
+
+<hr />
+
+### getResolvedParameters
+
+**Description:**
+
+Get array of all parameters present for the current route, once resolved/dispatched.
+
+**Parameters:**
+
+- None
+
+**Returns:**
+
+- (array)
 
 <hr />
 

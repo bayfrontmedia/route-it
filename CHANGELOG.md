@@ -12,6 +12,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities
 
+## [3.1.0] - 2023.08.04
+
+### Added
+
+- Added `getResolvedParameters` method
+
 ## [3.0.2] - 2023.06.23
 
 ### Fixed

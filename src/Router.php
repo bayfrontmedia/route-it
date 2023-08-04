@@ -576,6 +576,18 @@ class Router
         return Arr::get($this->getNamedRoutes(), $name, $default);
     }
 
+    private array $resolved_params = [];
+
+    /**
+     * Get array of all parameters present for the current route, once resolved/dispatched.
+     *
+     * @return array
+     */
+    public function getResolvedParameters(): array
+    {
+        return $this->resolved_params;
+    }
+
     /**
      * Resolves the incoming HTTP request by searching for a matching redirect, route, automapped location, or fallback.
      * Destination-specific parameters will overwrite global parameters of the same key.
@@ -659,6 +671,8 @@ class Router
              * params
              */
 
+            $this->resolved_params = array_merge($params, $route['params']);
+
             return [
                 'type' => 'route',
                 'destination' => $route['destination'],
@@ -685,6 +699,8 @@ class Router
                 if (isset($automap['id'])) {
                     $params['id'] = $automap['id'];
                 }
+
+                $this->resolved_params = $params;
 
                 return [
                     'type' => 'automap',
@@ -715,6 +731,8 @@ class Router
 
         $return['type'] = 'fallback';
         $return['params'] = array_merge($return['params'], $params);
+
+        $this->resolved_params = $return['params'];
 
         return $return;
 
@@ -781,6 +799,8 @@ class Router
 
         if (is_callable($destination)) {
 
+            $this->resolved_params = $params;
+
             return call_user_func($destination, $params);
 
         }
@@ -790,6 +810,8 @@ class Router
         $named_routes = $this->_getAllNamedRoutes();
 
         if (isset($named_routes[$destination])) {
+
+            $this->resolved_params = $named_routes[$destination]['params'];
 
             return $this->dispatchTo($named_routes[$destination]['destination'], $named_routes[$destination]['params']);
 
@@ -802,6 +824,8 @@ class Router
             $file = $this->options['files_root_path'] . '/' . ltrim($destination, '@');
 
             if (is_file($file)) {
+
+                $this->resolved_params = $params;
 
                 include($file);
 
@@ -834,6 +858,8 @@ class Router
             if (class_exists($class_name) && method_exists($class_name, $method)) {
 
                 $class = new $class_name();
+
+                $this->resolved_params = $params;
 
                 return $class->$method($params);
 
@@ -883,6 +909,8 @@ class Router
         $fallback = reset($fallbacks);
 
         $fallback['params'] = array_merge($params, $fallback['params']);
+
+        $this->resolved_params = $fallback['params'];
 
         return $this->dispatchTo($fallback['destination'], $fallback['params']); // Dispatch the first matching fallback
 
