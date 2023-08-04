@@ -142,6 +142,8 @@ For examples, see [addRoute](#addroute).
 - [dispatch](#dispatch)
 - [dispatchTo](#dispatchto)
 - [dispatchToFallback](#dispatchtofallback)
+- [redirect](#redirect)
+- [getResolvedParameters](#getresolvedparameters)
 
 <hr />
 
@@ -757,9 +759,11 @@ echo $router->getNamedRoute('login');
 
 Returns array of named routes.
 
+Automatically replaces wildcards with resolved parameters.
+
 **Parameters:**
 
-- None
+- `$params = []` (array): Additional parameters used to replace wildcards in the named route
 
 **Returns:**
 
@@ -773,10 +777,13 @@ Returns array of named routes.
 
 Returns URL of a named route.
 
+Automatically replaces wildcards with resolved parameters.
+
 **Parameters:**
 
 - `$name` (string)
 - `$default = ''` (string): Default value to return if named route does not exist
+- `$params = []` (array): Additional parameters used to replace wildcards in the named route
 
 **Returns:**
 
@@ -954,3 +961,19 @@ try {
     die($e->getMessage());
 }
 ```
+
+<hr />
+
+### getResolvedParameters
+
+**Description:**
+
+Get array of all parameters present for the current route once resolved/dispatched.
+
+**Parameters:**
+
+- None
+
+**Returns:**
+
+- (array)

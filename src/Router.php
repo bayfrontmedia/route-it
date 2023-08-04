@@ -542,38 +542,91 @@ class Router
     }
 
     /**
-     * Returns array of named routes
+     * Named routes with wildcards replaced.
      *
+     * @var array
+     */
+    private static array $named_routes = [];
+
+    /**
+     * Returns array of named routes.
+     *
+     * Automatically replaces wildcards with resolved parameters.
+     *
+     * @param array $params (Additional parameters used to replace wildcards in the named route)
      * @return array
      */
 
-    public function getNamedRoutes(): array
+    public function getNamedRoutes(array $params = []): array
     {
+
+        /*
+         * Return named routes based on the parameters passed.
+         */
+
+        $params_hash = md5(json_encode($params));
+
+        if (isset(self::$named_routes[$params_hash])) {
+            return self::$named_routes[$params_hash];
+        }
 
         $return = [];
 
+        $params = array_merge($this->getResolvedParameters(), $params);
+
         foreach ($this->_getAllNamedRoutes() as $name => $route) {
+
+            /*
+             * Replace any wildcards existing in the named route
+             * with matching resolved parameter, if existing.
+             */
+
+            preg_match_all("/{[^}]*}/", $route['url'], $wildcards);
+
+            if (!empty($wildcards[0])) { // Wildcards exist on named route
+
+                foreach ($wildcards[0] as $wildcard) {
+
+                    $exp = explode(':', $wildcard, 2);
+
+                    if (isset($exp[1])) {
+
+                        $param = rtrim($exp[1], '}');
+
+                        if (isset($params[$param])) {
+                            $route['url'] = str_replace($wildcard, $params[$param], $route['url']);
+                        }
+
+                    }
+
+                }
+
+            }
 
             $return[$name] = $route['url'];
 
         }
 
-        return $return;
+        self::$named_routes[$params_hash] = $return;
+
+        return self::$named_routes[$params_hash];
 
     }
 
     /**
-     * Returns URL of a named route
+     * Returns URL of a named route.
+     *
+     * Automatically replaces wildcards with resolved parameters.
      *
      * @param string $name
      * @param string $default (Default value to return if named route does not exist)
-     *
+     * @param array $params (Additional parameters used to replace wildcards in the named route)
      * @return string
      */
 
-    public function getNamedRoute(string $name, string $default = ''): string
+    public function getNamedRoute(string $name, string $default = '', array $params = []): string
     {
-        return Arr::get($this->getNamedRoutes(), $name, $default);
+        return Arr::get($this->getNamedRoutes($params), $name, $default);
     }
 
     /**
@@ -659,6 +712,8 @@ class Router
              * params
              */
 
+            $this->resolved_params = array_merge($params, $route['params']);
+
             return [
                 'type' => 'route',
                 'destination' => $route['destination'],
@@ -685,6 +740,8 @@ class Router
                 if (isset($automap['id'])) {
                     $params['id'] = $automap['id'];
                 }
+
+                $this->resolved_params = $params;
 
                 return [
                     'type' => 'automap',
@@ -715,6 +772,8 @@ class Router
 
         $return['type'] = 'fallback';
         $return['params'] = array_merge($return['params'], $params);
+
+        $this->resolved_params = $return['params'];
 
         return $return;
 
@@ -781,6 +840,8 @@ class Router
 
         if (is_callable($destination)) {
 
+            $this->resolved_params = $params;
+
             return call_user_func($destination, $params);
 
         }
@@ -790,6 +851,8 @@ class Router
         $named_routes = $this->_getAllNamedRoutes();
 
         if (isset($named_routes[$destination])) {
+
+            $this->resolved_params = $named_routes[$destination]['params'];
 
             return $this->dispatchTo($named_routes[$destination]['destination'], $named_routes[$destination]['params']);
 
@@ -802,6 +865,8 @@ class Router
             $file = $this->options['files_root_path'] . '/' . ltrim($destination, '@');
 
             if (is_file($file)) {
+
+                $this->resolved_params = $params;
 
                 include($file);
 
@@ -834,6 +899,8 @@ class Router
             if (class_exists($class_name) && method_exists($class_name, $method)) {
 
                 $class = new $class_name();
+
+                $this->resolved_params = $params;
 
                 return $class->$method($params);
 
@@ -884,12 +951,14 @@ class Router
 
         $fallback['params'] = array_merge($params, $fallback['params']);
 
+        $this->resolved_params = $fallback['params'];
+
         return $this->dispatchTo($fallback['destination'], $fallback['params']); // Dispatch the first matching fallback
 
     }
 
     /**
-     * Redirects to a given URL using a given status code
+     * Redirects to a given URL using a given status code.
      *
      * @param string $url (Fully qualified URL)
      * @param int $status (HTTP status code to return)
@@ -1345,6 +1414,18 @@ class Router
 
         return []; // Return empty array if no matches
 
+    }
+
+    private array $resolved_params = [];
+
+    /**
+     * Get array of all parameters present for the current route once resolved/dispatched.
+     *
+     * @return array
+     */
+    public function getResolvedParameters(): array
+    {
+        return $this->resolved_params;
     }
 
 }
