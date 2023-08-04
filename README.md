@@ -758,6 +758,8 @@ echo $router->getNamedRoute('login');
 
 Returns array of named routes.
 
+Automatically replaces wildcards with resolved parameters.
+
 **Parameters:**
 
 - None
@@ -773,6 +775,8 @@ Returns array of named routes.
 **Description:**
 
 Returns URL of a named route.
+
+Automatically replaces wildcards with resolved parameters.
 
 **Parameters:**
 

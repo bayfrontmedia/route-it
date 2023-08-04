@@ -542,7 +542,16 @@ class Router
     }
 
     /**
-     * Returns array of named routes
+     * Named routes with wildcards replaced.
+     *
+     * @var array
+     */
+    private static array $named_routes = [];
+
+    /**
+     * Returns array of named routes.
+     *
+     * Automatically replaces wildcards with resolved parameters.
      *
      * @return array
      */
@@ -550,20 +559,57 @@ class Router
     public function getNamedRoutes(): array
     {
 
+        if (!empty(self::$named_routes)) {
+            return self::$named_routes;
+        }
+
         $return = [];
 
+        $params = $this->getResolvedParameters();
+
         foreach ($this->_getAllNamedRoutes() as $name => $route) {
+
+            /*
+             * Replace any wildcards existing in the named route
+             * with matching resolved parameter, if existing.
+             */
+
+            preg_match_all("/{[^}]*}/", $route['url'], $wildcards);
+
+            if (!empty($wildcards[0])) { // Wildcards exist on named route
+
+                foreach ($wildcards[0] as $wildcard) {
+
+                    $exp = explode(':', $wildcard, 2);
+
+                    if (isset($exp[1])) {
+
+                        $param = rtrim($exp[1], '}');
+
+                        if (isset($params[$param])) {
+                            $route['url'] = str_replace($wildcard, $params[$param], $route['url']);
+                        }
+
+                    }
+
+                }
+
+            }
 
             $return[$name] = $route['url'];
 
         }
 
-        return $return;
+        self::$named_routes = $return;
+
+        return self::$named_routes;
 
     }
 
     /**
-     * Returns URL of a named route
+     * Returns URL of a named route.
+     *
+     * Automatically replaces wildcards with resolved parameters.
      *
      * @param string $name
      * @param string $default (Default value to return if named route does not exist)
