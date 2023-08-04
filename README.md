@@ -142,6 +142,7 @@ For examples, see [addRoute](#addroute).
 - [dispatch](#dispatch)
 - [dispatchTo](#dispatchto)
 - [dispatchToFallback](#dispatchtofallback)
+- [redirect](#redirect)
 - [getResolvedParameters](#getresolvedparameters)
 
 <hr />
@@ -762,7 +763,7 @@ Automatically replaces wildcards with resolved parameters.
 
 **Parameters:**
 
-- `$params = []` (array): Additional parameters used to replace wildcards
+- `$params = []` (array): Additional parameters used to replace wildcards in the named route
 
 **Returns:**
 
@@ -782,7 +783,7 @@ Automatically replaces wildcards with resolved parameters.
 
 - `$name` (string)
 - `$default = ''` (string): Default value to return if named route does not exist
-- `$params = []` (array): Additional parameters used to replace wildcards
+- `$params = []` (array): Additional parameters used to replace wildcards in the named route
 
 **Returns:**
 
@@ -967,7 +968,7 @@ try {
 
 **Description:**
 
-Get array of all parameters present for the current route, once resolved/dispatched.
+Get array of all parameters present for the current route once resolved/dispatched.
 
 **Parameters:**
 

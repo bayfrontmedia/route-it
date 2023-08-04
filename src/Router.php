@@ -553,7 +553,7 @@ class Router
      *
      * Automatically replaces wildcards with resolved parameters.
      *
-     * @param array $params (Additional parameters used to replace wildcards)
+     * @param array $params (Additional parameters used to replace wildcards in the named route)
      * @return array
      */
 
@@ -620,7 +620,7 @@ class Router
      *
      * @param string $name
      * @param string $default (Default value to return if named route does not exist)
-     * @param array $params (Additional parameters used to replace wildcards)
+     * @param array $params (Additional parameters used to replace wildcards in the named route)
      * @return string
      */
 
@@ -958,7 +958,7 @@ class Router
     }
 
     /**
-     * Redirects to a given URL using a given status code
+     * Redirects to a given URL using a given status code.
      *
      * @param string $url (Fully qualified URL)
      * @param int $status (HTTP status code to return)
@@ -1419,7 +1419,7 @@ class Router
     private array $resolved_params = [];
 
     /**
-     * Get array of all parameters present for the current route, once resolved/dispatched.
+     * Get array of all parameters present for the current route once resolved/dispatched.
      *
      * @return array
      */
