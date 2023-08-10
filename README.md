@@ -818,7 +818,7 @@ A `DispatchException` will be thrown if the request is unable to be resolved.
 
 **Parameters:**
 
-- `$params` (array): Global parameters to pass to all destinations
+- `$params = []` (array): Global parameters to pass to all destinations
 
 **Returns:**
 
