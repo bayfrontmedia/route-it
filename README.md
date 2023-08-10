@@ -818,8 +818,7 @@ A `DispatchException` will be thrown if the request is unable to be resolved.
 
 **Parameters:**
 
-- `$name` (string)
-- `$default = ''` (string): Default value to return if named route does not exist
+- `$params` (array): Global parameters to pass to all destinations
 
 **Returns:**
 
