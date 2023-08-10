@@ -798,12 +798,21 @@ Automatically replaces wildcards with resolved parameters.
 Resolves the incoming HTTP request by searching for a matching redirect, route, automapped location, or fallback.
 Destination-specific parameters will overwrite global parameters of the same key.
 
-Returned array:
+The returned array consists of the following keys:
 
-- `redirect`: Contains keys `type`, `destination` (URL), and `status` (HTTP status code)
-- `route`: Contains keys `type`, `destination` (defined route), and `params`
-- `automap`: Contains keys `type`, `destination` (as class:method), and `params`
-- `fallback`: Contains keys `type`, `destination` (defined fallback), `params` and `status`
+- `type`
+- `destination`
+- `status` (HTTP status code)
+- `params` (Array)
+
+The destination will vary based on the type:
+
+| type       | destination      |
+|------------|------------------|
+| `redirect` | URL              |
+| `route`    | Defined route    |
+| `automap`  | `Class:method`   |
+| `fallback` | Defined callback |
 
 A `DispatchException` will be thrown if the request is unable to be resolved.
 

@@ -12,6 +12,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities
 
+## [3.1.1] - 2023.08.10
+
+### Added
+
+- Updated `resolve` method to ensure `status` is always being returned.
+
+### Fixed
+
+- Fixed bug where `status` was not being updated to `404` when route was `fallback` type in `resolve` method. 
+
 ## [3.1.0] - 2023.08.04
 
 ### Added

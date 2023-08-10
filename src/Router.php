@@ -633,12 +633,19 @@ class Router
      * Resolves the incoming HTTP request by searching for a matching redirect, route, automapped location, or fallback.
      * Destination-specific parameters will overwrite global parameters of the same key.
      *
-     * Returned array:
+     * The returned array consists of the following keys:
      *
-     * - `redirect`: Contains keys `type`, `destination` (URL), and `status` (HTTP status code)
-     * - `route`: Contains keys `type`, `destination` (defined route), and `params`
-     * - `automap`: Contains keys `type`, `destination` (as class:method), and `params`
-     * - `fallback`: Contains keys `type`, `destination` (defined fallback), `params` and `status`
+     * - type
+     * - destination
+     * - status (HTTP status code)
+     * - params (Array)
+     *
+     * The destination will vary based on type:
+     *
+     * - redirect: URL
+     * - route: Defined route
+     * - automap: Class:method
+     * - fallback: Defined callback
      *
      * A DispatchException will be thrown if the request is unable to be resolved.
      *
@@ -665,7 +672,8 @@ class Router
             return [
                 'type' => 'redirect',
                 'destination' => $redirect_url,
-                'status' => 301
+                'status' => 301,
+                'params' => []
             ];
 
         }
@@ -680,12 +688,6 @@ class Router
 
         if (!empty($redirect) && $this_request['protocol'] . $this_request['host'] . $this_request['path'] != $redirect['destination']) {
 
-            /*
-             * $redirect array keys:
-             * destination
-             * status
-             */
-
             $query = '';
 
             if ($this_request['query_string'] != '') {
@@ -695,7 +697,8 @@ class Router
             return [
                 'type' => 'redirect',
                 'destination' => $redirect['destination'] . $query,
-                'status' => $redirect['status']
+                'status' => $redirect['status'],
+                'params' => []
             ];
 
         }
@@ -706,17 +709,12 @@ class Router
 
         if (!empty($route)) { // A valid route was found
 
-            /*
-             * $route array keys:
-             * destination
-             * params
-             */
-
             $this->resolved_params = array_merge($params, $route['params']);
 
             return [
                 'type' => 'route',
                 'destination' => $route['destination'],
+                'status' => 200,
                 'params' => array_merge($params, $route['params'])
             ];
 
@@ -746,6 +744,7 @@ class Router
                 return [
                     'type' => 'automap',
                     'destination' => $automap['class'] . ':' . $automap['method'],
+                    'status' => 200,
                     'params' => $params
                 ];
 
@@ -766,11 +765,11 @@ class Router
 
         $return = Arr::only(reset($fallbacks), [
             'destination',
-            'params',
-            'status'
+            'params'
         ]);
 
         $return['type'] = 'fallback';
+        $return['status'] = 404;
         $return['params'] = array_merge($return['params'], $params);
 
         $this->resolved_params = $return['params'];
@@ -796,13 +795,12 @@ class Router
 
         $resolve = $this->resolve($params);
 
-        if (Arr::get($resolve, 'type') == 'redirect') {
-
+        if (Arr::get($resolve, 'type') == 'redirect') { // Parameters are irrelevant
             $this->redirect(Arr::get($resolve, 'destination', ''), Arr::get($resolve, 'status', 302));
             return true;
         }
 
-        if (Arr::get($resolve, 'type') == 'route' || Arr::get($resolve, 'type') == 'automap') {
+        if (Arr::get($resolve, 'type') == 'route' || Arr::get($resolve, 'type') == 'automap') { // Status is irrelevant
 
             return $this->dispatchTo(Arr::get($resolve, 'destination', ''), Arr::get($resolve, 'params', []));
 
