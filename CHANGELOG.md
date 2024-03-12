@@ -12,6 +12,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities
 
+## [3.1.2] - 2024.03.12
+
+### Fixed
+
+- Fixed bug where matching route was not found if request path was empty
+
 ## [3.1.1] - 2023.08.10
 
 ### Added

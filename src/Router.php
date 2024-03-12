@@ -1108,7 +1108,7 @@ class Router
 
         $request_path = $this->_sanitizePath(Arr::get($this_request, 'path', ''));
 
-        if ($request_host == '' || $request_path == '') {
+        if ($request_host == '') {
             return [];
         }
 
