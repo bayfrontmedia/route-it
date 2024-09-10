@@ -233,7 +233,7 @@ class Router
 
             if (!filter_var($destination, FILTER_VALIDATE_URL)) { // If an internal redirect
 
-                $destination = Request::getRequest('protocol') . $this->getHost() . $this->getRoutePrefix() . $this->_sanitizePath($destination);
+                $destination = Request::getRequest(Request::PART_PROTOCOL) . $this->getHost() . $this->getRoutePrefix() . $this->_sanitizePath($destination);
 
             }
 
@@ -523,7 +523,7 @@ class Router
 
                     if (isset($info['name'])) { // If route has a name
 
-                        $info['url'] = Request::getRequest('protocol') . $host . $path; // Determine the URL
+                        $info['url'] = Request::getRequest(Request::PART_PROTOCOL) . $host . $path; // Determine the URL
 
                         $names[$info['name']] = Arr::except($info, 'name'); // Make "name" the key, and remove from array
 
@@ -756,7 +756,7 @@ class Router
 
         $fallbacks = Arr::only($this->getFallbacks(), [ // Keep only keys for valid request methods
             self::METHOD_ANY,
-            Request::getRequest('method')
+            Request::getRequest(Request::PART_METHOD)
         ]);
 
         if (empty($fallbacks)) {
@@ -934,7 +934,7 @@ class Router
 
         $fallbacks = Arr::only($this->getFallbacks(), [ // Keep only keys for valid request methods
             self::METHOD_ANY,
-            Request::getRequest('method')
+            Request::getRequest(Request::PART_METHOD)
         ]);
 
         if (empty($fallbacks)) { // No valid fallbacks exist with this request method

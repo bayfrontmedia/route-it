@@ -30,7 +30,7 @@
     "php": "^8.0",
     "ext-ctype": "*",
     "bayfrontmedia/php-array-helpers": "^2.0",
-    "bayfrontmedia/php-http-request": "^3.0",
+    "bayfrontmedia/php-http-request": "^3.1",
     "bayfrontmedia/php-http-response": "^2.0",
     "bayfrontmedia/php-string-helpers": "^2.0"
   },
