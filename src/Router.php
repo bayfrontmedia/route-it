@@ -6,7 +6,6 @@ use Bayfront\ArrayHelpers\Arr;
 use Bayfront\HttpRequest\Request;
 use Bayfront\HttpResponse\InvalidStatusCodeException;
 use Bayfront\HttpResponse\Response;
-use Bayfront\StringHelpers\Str;
 
 class Router
 {
@@ -283,7 +282,7 @@ class Router
      * @return self
      */
 
-    public function addRoute(array|string $methods, string $path, mixed $destination, array $params = [], string $name = NULL): self
+    public function addRoute(array|string $methods, string $path, mixed $destination, array $params = [], ?string $name = NULL): self
     {
 
         foreach ((array)$methods as $method) {
@@ -316,7 +315,7 @@ class Router
      * @return self
      */
 
-    public function any(string $path, mixed $destination, array $params = [], string $name = NULL): self
+    public function any(string $path, mixed $destination, array $params = [], ?string $name = NULL): self
     {
         return $this->addRoute(self::METHOD_ANY, $path, $destination, $params, $name);
     }
@@ -332,7 +331,7 @@ class Router
      * @return self
      */
 
-    public function connect(string $path, mixed $destination, array $params = [], string $name = NULL): self
+    public function connect(string $path, mixed $destination, array $params = [], ?string $name = NULL): self
     {
         return $this->addRoute(Request::METHOD_CONNECT, $path, $destination, $params, $name);
     }
@@ -348,7 +347,7 @@ class Router
      * @return self
      */
 
-    public function delete(string $path, mixed $destination, array $params = [], string $name = NULL): self
+    public function delete(string $path, mixed $destination, array $params = [], ?string $name = NULL): self
     {
         return $this->addRoute(Request::METHOD_DELETE, $path, $destination, $params, $name);
     }
@@ -364,7 +363,7 @@ class Router
      * @return self
      */
 
-    public function get(string $path, mixed $destination, array $params = [], string $name = NULL): self
+    public function get(string $path, mixed $destination, array $params = [], ?string $name = NULL): self
     {
         return $this->addRoute(Request::METHOD_GET, $path, $destination, $params, $name);
     }
@@ -380,7 +379,7 @@ class Router
      * @return self
      */
 
-    public function head(string $path, mixed $destination, array $params = [], string $name = NULL): self
+    public function head(string $path, mixed $destination, array $params = [], ?string $name = NULL): self
     {
         return $this->addRoute(Request::METHOD_HEAD, $path, $destination, $params, $name);
     }
@@ -396,7 +395,7 @@ class Router
      * @return self
      */
 
-    public function options(string $path, mixed $destination, array $params = [], string $name = NULL): self
+    public function options(string $path, mixed $destination, array $params = [], ?string $name = NULL): self
     {
         return $this->addRoute(Request::METHOD_OPTIONS, $path, $destination, $params, $name);
     }
@@ -412,7 +411,7 @@ class Router
      * @return self
      */
 
-    public function patch(string $path, mixed $destination, array $params = [], string $name = NULL): self
+    public function patch(string $path, mixed $destination, array $params = [], ?string $name = NULL): self
     {
         return $this->addRoute(Request::METHOD_PATCH, $path, $destination, $params, $name);
     }
@@ -428,7 +427,7 @@ class Router
      * @return self
      */
 
-    public function post(string $path, mixed $destination, array $params = [], string $name = NULL): self
+    public function post(string $path, mixed $destination, array $params = [], ?string $name = NULL): self
     {
         return $this->addRoute(Request::METHOD_POST, $path, $destination, $params, $name);
     }
@@ -444,7 +443,7 @@ class Router
      * @return self
      */
 
-    public function put(string $path, mixed $destination, array $params = [], string $name = NULL): self
+    public function put(string $path, mixed $destination, array $params = [], ?string $name = NULL): self
     {
         return $this->addRoute(Request::METHOD_PUT, $path, $destination, $params, $name);
     }
@@ -460,7 +459,7 @@ class Router
      * @return self
      */
 
-    public function trace(string $path, mixed $destination, array $params = [], string $name = NULL): self
+    public function trace(string $path, mixed $destination, array $params = [], ?string $name = NULL): self
     {
         return $this->addRoute(Request::METHOD_TRACE, $path, $destination, $params, $name);
     }
@@ -858,7 +857,7 @@ class Router
 
         // If to a file
 
-        if (Str::startsWith($destination, '@')) {
+        if (str_starts_with($destination, '@')) {
 
             $file = $this->options['files_root_path'] . '/' . ltrim($destination, '@');
 
@@ -882,7 +881,7 @@ class Router
 
         if (isset($loc[1])) { // Dispatch to Class:method
 
-            if ($this->options['class_namespace'] == '' || Str::startsWith($loc[0], $this->options['class_namespace'])) {
+            if ($this->options['class_namespace'] == '' || str_starts_with($loc[0], $this->options['class_namespace'])) {
 
                 $class_name = $loc[0];
 
@@ -998,7 +997,7 @@ class Router
     protected function _getAutomapDestination(array $this_request): array
     {
 
-        if (Str::startsWith($this_request['path'], $this->options['automapping_route_prefix'])) {
+        if (str_starts_with($this_request['path'], $this->options['automapping_route_prefix'])) {
 
             $segments = explode('/', trim(str_replace($this->options['automapping_route_prefix'], '', $this_request['path']), '/'));
 
@@ -1186,8 +1185,8 @@ class Router
              */
 
             if (count($route_segments) !== count($request_segments) &&
-                !Str::has(end($route_segments), '{**:') &&
-                !Str::has(end($route_segments), '{?:')
+                !str_contains(end($route_segments), '{**:') &&
+                !str_contains(end($route_segments), '{?:')
             ) { // Match impossibility
 
                 continue; // This route does not match - continue to next iteration
